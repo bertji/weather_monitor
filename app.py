@@ -1,10 +1,7 @@
 from flask import Flask, render_template
 from datetime import datetime
-import pandas as pd
 from meteostat import Point, Daily
 import calendar
-from scipy import stats
-import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
