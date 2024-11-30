@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Winter Temperature Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Winter Temperature Tracker</h1>
+
+    <h2>Winter Ranges for 2024-2025</h2>
+    <p><strong>Meteorological Winter:</strong> {{ meteorological_winter_2024 }}</p>
+    <p><strong>Astronomical Winter:</strong> {{ astronomical_winter_2024 }}</p>
+
+    <h2>Current Winter (2025) Temperature Tracking</h2>
+    <h3>Meteorological Winter</h3>
+    <p><strong>Average Temperature So Far:</strong> {{ meteorological_avg_temp_2025 if meteorological_avg_temp_2025 is not none else 'N/A' }}</p>
+    <p><strong>Needed Average Temperature for Remaining Days:</strong> {{ needed_temp_meteorological if needed_temp_meteorological is not none else 'N/A' }}</p>
+    <p><strong>Last Year's Average Temperature (2024):</strong> {{ last_year_meteorological_avg_temp if last_year_meteorological_avg_temp is not none else 'N/A' }}</p>
+    <p><strong>Last Year's Average Temperature So Far (2024):</strong> {{ last_year_meteorological_avg_temp_so_far if last_year_meteorological_avg_temp_so_far is not none else 'N/A' }}</p>
+
+    <h3>Astronomical Winter</h3>
+    <p><strong>Average Temperature So Far:</strong> {{ astronomical_avg_temp_2025 if astronomical_avg_temp_2025 is not none else 'N/A' }}</p>
+    <p><strong>Needed Average Temperature for Remaining Days:</strong> {{ needed_temp_astronomical if needed_temp_astronomical is not none else 'N/A' }}</p>
+    <p><strong>Last Year's Average Temperature (2024):</strong> {{ last_year_astronomical_avg_temp if last_year_astronomical_avg_temp is not none else 'N/A' }}</p>
+    <p><strong>Last Year's Average Temperature So Far (2024):</strong> {{ last_year_astronomical_avg_temp_so_far if last_year_astronomical_avg_temp_so_far is not none else 'N/A' }}</p>
+
+    
+    <h2>Meteorological Winter Averages</h2>
+    <canvas id="meteorologicalChart" width="400" height="200"></canvas>
+    
+    <h2>Astronomical Winter Averages</h2>
+    <canvas id="astronomicalChart" width="400" height="200"></canvas>
+
+    
+    <script>
+        // Data for Meteorological Winter Averages
+        const meteorologicalLabels = {{ meteorological_labels | tojson }};
+        const meteorologicalData = {{ meteorological_values | tojson }};
+
+        const meteorologicalCtx = document.getElementById('meteorologicalChart').getContext('2d');
+        const meteorologicalChart = new Chart(meteorologicalCtx, {
+            type: 'line',
+            data: {
+                labels: meteorologicalLabels,
+                datasets: [{
+                    label: 'Meteorological Winter Averages (°C)',
+                    data: meteorologicalData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+
+        // Data for Astronomical Winter Averages
+        const astronomicalLabels = {{ astronomical_labels | tojson }};
+        const astronomicalData = {{ astronomical_values | tojson }};
+
+        const astronomicalCtx = document.getElementById('astronomicalChart').getContext('2d');
+        const astronomicalChart = new Chart(astronomicalCtx, {
+            type: 'line',
+            data: {
+                labels: astronomicalLabels,
+                datasets: [{
+                    label: 'Astronomical Winter Averages (°C)',
+                    data: astronomicalData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
